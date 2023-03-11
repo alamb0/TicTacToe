@@ -9,8 +9,8 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 
 const players = {
-  1: { token: "X", icon: <FontAwesomeIcon icon={faX} /> },
-  2: { token: "O", icon: <FontAwesomeIcon icon={faO} /> },
+  1: { token: "X", icon: <FontAwesomeIcon icon={faX} title="X" /> },
+  2: { token: "O", icon: <FontAwesomeIcon icon={faO} title="O" /> },
 };
 
 function Square(props) {
@@ -43,7 +43,12 @@ function Square(props) {
   };
 
   return (
-    <div className="Square" onClick={handleClick} disabled={value}>
+    <div
+      className="Square"
+      onClick={handleClick}
+      disabled={value}
+      data-testid={`square-${squareNumber}`}
+    >
       {value}
     </div>
   );
@@ -88,7 +93,6 @@ function Game() {
       const [i1, i2, i3] = winCondition;
       const check = currentBoard[i1] + currentBoard[i2] + currentBoard[i3];
       if (check === "XXX") {
-        console.log("x winner");
         const nextCount = playerOneWins + 1;
         setPlayerOneWins(nextCount);
         winnerText = "🎉 🥳 X Wins!";
@@ -106,7 +110,16 @@ function Game() {
       setIsGameOver(true);
       setGame({ board: Array(9).fill(), turn: 0 });
     }
-  }, [game, setWinner, setIsGameOver, setGame]);
+  }, [
+    game,
+    setWinner,
+    setIsGameOver,
+    setGame,
+    playerOneWins,
+    setPlayerOneWins,
+    playerTwoWins,
+    setPlayerTwoWins,
+  ]);
 
   return (
     <div className="Game">
